@@ -1,55 +1,78 @@
-import { useState } from 'react'
-import { StyleSheet, View, FlatList } from 'react-native';
-import GoalInput from './Components/GoalItem';
-
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
 
 export default function App() {
-  const[goals, setGoals]=useState([])
+  const [enteredGoalText, setEnteredGoalText] = useState('');
+  const [goals, setGoals] = useState([]);
 
-  function handleAddGoals(enteredGoalText){
-    setGoals(()=> [...goals,{text: enteredGoalText}])
+  function handleInputGoal(enteredText) {
+    console.log(enteredText);
+    setEnteredGoalText(enteredText);
   }
 
-  function handle(){
-    console.log(enteredGoalsText)
-    setGoals(() => [goals,{text:enteredGoalsText,key: Math.random().toString()}])
+  function handleAddGoal() {
+    console.log(enteredGoalText);
+    setGoals([...goals, { text: enteredGoalText, key: Math.random().toString() }]);
   }
+
   return (
     <View style={styles.container}>
-      <GoalInput
-      onAddGoal={handleAddGoal}
-      />
-      <View style={styles.goalsContainer}>
-        <FlatList
-        data={goals}
-        style={styles.textInput}
-        placeholder='Your Goals'
-        onChangeText={handleInputGoals}
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textinput}
+          placeholder="Your Goal!"
+          onChangeText={handleInputGoal}
         />
-        <Buttton
-        title='Add Goals'
-        color={'#A3FFD6'}
-        onPress={handleAddGoals}
+        <Button
+          title="Add Goal"
+          color="#A3FFD6"
+          onPress={handleAddGoal}
         />
       </View>
       <View style={styles.goalsContainer}>
         <FlatList
-        data={goals}
-        rederItem={(itemData) =>{
-          <View style ={styles.goalsItem}>
-          <Text style = {styles.goalsText}>
-            {itwmData.item.text}
-            </Text>
+          data={goals}
+          renderItem={({ item }) => (
+            <View style={styles.goalsItem}>
+              <Text style={styles.goalText}>{item.text}</Text>
             </View>
-        }}
-        >
-        </FlatList>
-
-
+          )}
+        />
       </View>
-
-
     </View>
-    
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#7BC9FF',
+  },
+  textinput: {
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    width: '80%',
+    marginRight: 3,
+    padding: 8,
+    borderRadius: 5,
+  },
+  goalsItem: { 
+    margin: 0,
+    padding: 0,
+    borderRadius: 6,
+    backgroundColor: '#8576FF',
+    color: 'white',
+  },
+  goalText: {
+    color: 'white',
+  },
+});
